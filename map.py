@@ -50,7 +50,7 @@ cn = (
     .add("谭颖杉", n16, "china-cities")
     .add("李文羽",n9,"china-cities")
     .add("苏品乐",n11,"china-cities")
-    .add("梁子耀", n18, "china-cities")
+    .add("梁子耀",n18,"china-cities")
     .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
 )
 
