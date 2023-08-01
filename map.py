@@ -1,6 +1,9 @@
 from pyecharts import options as opts
+
 from pyecharts.charts import Map
+
 from pyecharts.charts import Page
+
 import os
 
 n1 = [('北海市',1)]
@@ -21,6 +24,7 @@ n15 = [('武汉市',1)]
 n16 = [('西安市',1)]
 n17 = [('Australia',1)]
 n18 = [('大连市',1)]
+n19 = [('厦门市',1)]
 
 cn = (
     Map()
@@ -51,6 +55,7 @@ cn = (
     .add("李文羽",n9,"china-cities")
     .add("苏品乐",n11,"china-cities")
     .add("梁子耀",n18,"china-cities")
+    .add("李诗羽",n19,"china-cities")
     .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
 )
 
@@ -60,10 +65,11 @@ wo = (
     .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
 )
 
-map = (
+final_map = (
     Page(page_title = '13班蹭饭图')
     .add(cn)
     .add(wo)
     .render('index.html')
 )
+
 os.system('index.html')
