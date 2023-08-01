@@ -1,9 +1,6 @@
 from pyecharts import options as opts
-
 from pyecharts.charts import Map
-
 from pyecharts.charts import Page
-
 import os
 
 n1 = [('北海市',1)]
