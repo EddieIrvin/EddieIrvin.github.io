@@ -1,6 +1,8 @@
 from pyecharts import options as opts
 from pyecharts.charts import Map
 from pyecharts.charts import Page
+# from pyecharts.render import make_snapshot
+# from snapshot_selenium import snapshot
 import os
 
 bh = [('北海市', 1)]
@@ -76,4 +78,7 @@ final_map = (
     .render('index.html')
 )
 
+# make_snapshot(snapshot,final_map.render(),'output.png')
+
 os.system('index.html')
+# os.system('output.png')
