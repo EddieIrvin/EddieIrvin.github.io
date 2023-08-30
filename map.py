@@ -25,6 +25,7 @@ aus = [('Australia', 1)]
 dl = [('大连市', 1)]
 xm = [('厦门市', 1)]
 cc = [('长春市',1)]
+dq = [('大庆市',1)]
 
 cn = (
     Map()
@@ -60,7 +61,7 @@ cn = (
     .add("李青新", nn, "china-cities")
     .add("农鑫晨", nn, "china-cities")
     .add("池安安", cc, "china-cities")
-    .add("王楷文", bj, "china-cities")
+    .add("王楷文", dq, "china-cities")
     .add("周圆滟", gl, "china-cities")
     .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
 )
