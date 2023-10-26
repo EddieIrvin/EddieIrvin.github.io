@@ -76,10 +76,10 @@ final_map = (
     Page(page_title = '13班蹭饭图')
     .add(cn)
     .add(wo)
-    .render('index.html')
+    .render('201713.html')
 )
 
 # make_snapshot(snapshot,final_map.render(),'output.png')
 
-os.system('index.html')
+os.system('201713.html')
 # os.system('output.png')
