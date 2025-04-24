@@ -43,3 +43,16 @@ body
     color: white;
     background-color: #4CAF50;
 }
+
+#buttomguide
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+}
