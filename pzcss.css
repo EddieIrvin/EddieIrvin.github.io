@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+
+#title
+{
+    text-align: left;
+}
+
+#guide
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+}
+
+.list1 {
+    float: left;
+    border-right: 1px solid #bbb;
+    width: 200px;
+}
+
+.list1 a {
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.list1 a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.list1 a.active {
+    color: white;
+    background-color: #4CAF50;
+}
