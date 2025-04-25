@@ -8,26 +8,27 @@ body
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    background-color: #464646
+    background-color: #464646;
 }
 
 #guide
 {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin-top: 0px;
+    padding-top: 0px;
     overflow: hidden;
     border: 1px solid #e7e7e7;
     background-color: #f3f3f3;
+    display: flex;
 }
 
-.list1 {
+.guide-list {
     float: left;
     border-right: 1px solid #bbb;
     width: 200px;
 }
 
-.list1 a {
+.guide-list a {
     display: block;
     color: #666;
     text-align: center;
@@ -35,11 +36,11 @@ body
     text-decoration: none;
 }
 
-.list1 a:hover:not(.active) {
+.guide-list a:hover:not(.active) {
     background-color: #ddd;
 }
 
-.list1 a.active {
+.guide-list a.active {
     color: white;
     background-color: #4CAF50;
 }
@@ -52,7 +53,13 @@ body
     overflow: hidden;
     border: 1px solid #e7e7e7;
     background-color: #f3f3f3;
-    bottom: 0;
     width: 100%;
+    bottom: 1px;
     position: fixed;
+    display: flex;
+}
+
+.vertical-list
+{
+    list-style-type: none;
 }
