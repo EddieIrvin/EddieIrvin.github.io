@@ -2,16 +2,23 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EddieIrvin - 完美导航 v1.3.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#5ab9ea">
+    <title>EddieIrvin - 内容平台</title>
     <style>
         /* ========== 核心变量 ========== */
         :root {
-            --xd-blue: #5ab9ea;     /* XD标准蓝色 */
-            --xd-gray: #707070;     /* XD描边灰色 */
-            --xd-white: #fff;       /* 纯白色 */
-            --nav-height: 89px;     /* 导航栏高度 */
-            --menu-speed: 0.3s;     /* 动画速度 */
+            /* 导航系统 */
+            --xd-blue: #5ab9ea;
+            --xd-gray: #707070;
+            --xd-white: #fff;
+            --nav-height: 89px;
+            --menu-speed: 0.3s;
+
+            /* 内容系统 */
+            --content-padding: 40px;
+            --card-radius: 12px;
+            --grid-gap: 20px;
         }
 
         /* ========== 基础重置 ========== */
@@ -23,9 +30,15 @@
 
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
         }
 
-        /* ========== 导航系统 ========== */
+        body {
+            background: #f8f9fa;
+            font-family: 'CustomSans', Arial, sans-serif;
+        }
+
+        /* ========== 导航系统 (v4.0) ========== */
         .navbar {
             width: 100%;
             height: var(--nav-height);
@@ -33,11 +46,12 @@
             display: flex;
             align-items: center;
             padding: 0 45px;
-            position: relative;
-            z-index: 1000; /* 确保导航栏在最顶层 */
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        /* ========== 汉堡菜单 (精准还原XD设计) ========== */
         .hamburger {
             width: 50px;
             height: 50px;
@@ -46,7 +60,10 @@
             cursor: pointer;
             position: relative;
             background: var(--xd-blue);
-            overflow: hidden; /* 防止动画溢出 */
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            display: none;
         }
 
         .hamburger-line {
@@ -57,15 +74,14 @@
             background: var(--xd-gray);
             border-radius: 2.5px;
             transition: all var(--menu-speed) cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            transform-origin: center;
+            transform-origin: 18.5px 2.5px;
+            will-change: transform, opacity;
         }
 
-        /* 精确位置定位 */
         .hamburger-line:nth-child(1) { top: 8px; }
         .hamburger-line:nth-child(2) { top: 22px; }
         .hamburger-line:nth-child(3) { top: 36px; }
 
-        /* 激活状态动画 */
         .hamburger.active .hamburger-line:nth-child(1) {
             transform: translateY(14px) rotate(45deg);
         }
@@ -77,140 +93,283 @@
             transform: translateY(-14px) rotate(-45deg);
         }
 
-        /* ========== 导航菜单系统 ========== */
         .nav-menu {
-            position: absolute;
-            top: 100%;         /* 从导航栏底部开始 */
-            left: 0;
-            width: 100%;
-            background: var(--xd-blue);
-            padding: 30px 45px;
-            transform: translateY(-20px);
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--menu-speed) ease;
-            z-index: 999;       /* 在导航栏下方 */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-left: auto;
         }
 
-        /* 菜单激活状态 */
-        .nav-menu.active {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+            padding: 0;
         }
 
-        /* 菜单项样式 */
         .nav-menu a {
             color: var(--xd-white);
             text-decoration: none;
-            display: block;
-            padding: 15px 0;
-            font-size: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.2s ease;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 6px;
         }
 
+        .nav-menu a:focus,
         .nav-menu a:hover {
-            transform: translateX(10px);
-            opacity: 0.9;
+            background: rgba(255,255,255,0.15);
+            outline: none;
         }
 
-        /* ========== 品牌标题 ========== */
+        .nav-menu a:active {
+            transform: scale(0.95);
+        }
+
         .logo {
             color: var(--xd-white);
             font: 40px/1 'Impact', sans-serif;
             letter-spacing: 0.15em;
-            margin-left: 82px;
             user-select: none;
-            position: relative;
-            z-index: 1001; /* 确保在菜单上方 */
         }
 
-        /* ========== 响应式设计 ========== */
+        /* ========== 内容系统 ========== */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: var(--content-padding);
+            animation: contentFade 1s ease forwards;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .article-section {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--grid-gap);
+            margin-top: 30px;
+        }
+
+        .grid-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 4/3;
+            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+            background-size: 200% 100%;
+            animation: 1.5s shine linear infinite;
+            contain: strict;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* ========== 动画系统 ========== */
+        @keyframes contentFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shine {
+            to { background-position-x: -200%; }
+        }
+
+        .loading-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: var(--xd-blue);
+            display: none;
+        }
+
+        .loading-text::after {
+            content: '';
+            animation: loadingDots 1.5s infinite;
+        }
+
+        @keyframes loadingDots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* ========== 响应式优化 ========== */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 0 20px;
+            .navbar { padding: 0 20px; }
+            .hamburger { display: block; }
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--xd-blue);
+                padding: 20px;
+                transform: translateY(-20px);
+                opacity: 0;
+                visibility: hidden;
+                transition: all var(--menu-speed) ease;
             }
-            .hamburger {
-                width: 40px;
-                height: 40px;
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
             }
-            .hamburger-line {
-                left: 5px;
-                width: 30px;
-                height: 4px;
+            .nav-menu ul {
+                flex-direction: column;
+                gap: 15px;
             }
-            .hamburger-line:nth-child(1) { top: 6px; }
-            .hamburger-line:nth-child(2) { top: 18px; }
-            .hamburger-line:nth-child(3) { top: 30px; }
             .logo {
                 font-size: 28px;
-                margin-left: 40px;
+                margin-left: 20px;
             }
-            .nav-menu {
+            .content-wrapper {
                 padding: 20px;
+                margin-top: 80px;
             }
-            .nav-menu a {
-                font-size: 18px;
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 24px;
+                margin-left: 15px;
             }
+            .nav-menu ul {
+                gap: 10px;
+            }
+        }
+
+        /* ========== 字体定义 ========== */
+        @font-face {
+            font-family: 'CustomSans';
+            src: url('font.woff2') format('woff2');
+            font-display: swap;
         }
     </style>
 </head>
 <body>
-    <!-- 导航结构 -->
+    <!-- 导航栏 -->
     <nav class="navbar">
-        <!-- 汉堡菜单 -->
-        <button class="hamburger" id="hamburger" aria-label="主菜单">
+        <button class="hamburger" id="hamburger" aria-label="主菜单" aria-expanded="false">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
         </button>
-
-        <!-- 品牌标题 -->
         <h1 class="logo">EddieIrvin</h1>
-
-        <!-- 导航菜单 -->
         <div class="nav-menu" id="navMenu">
-            <a href="#home">首页</a>
-            <a href="#about">关于</a>
-            <a href="#work">作品</a>
-            <a href="#contact">联系</a>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="#work">作品</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
         </div>
     </nav>
 
-    <script>
-        // 增强交互控制
+    <!-- 加载动画 -->
+    <div class="loading-text">正在加载内容</div>
+
+    <!-- 正文内容 -->
+    <main class="content-wrapper">
+        <section class="article-section">
+            <h1>最新作品</h1>
+            <p>探索创意与技术的完美结合...</p>
+            
+            <div class="image-grid">
+                <div class="grid-item">
+                    <img data-src="real-image1.jpg" src="placeholder.jpg" alt="设计作品1" loading="lazy">
+                </div>
+                <div class="grid-item">
+                    <img data-src="real-image2.jpg" src="placeholder.jpg" alt="设计作品2" loading="lazy">
+                </div>
+                <div class="grid-item">
+                    <img data-src="real-image3.jpg" src="placeholder.jpg" alt="设计作品3" loading="lazy">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script defer>
+        // 导航交互
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('navMenu');
+        
+        const toggleMenu = (state) => {
+            const isExpanded = state ?? hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active', isExpanded);
+            hamburger.setAttribute('aria-expanded', isExpanded);
+        };
 
-        // 点击汉堡菜单
         hamburger.addEventListener('click', (e) => {
             e.stopPropagation();
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
+            toggleMenu();
         });
 
-        // 点击外部关闭菜单
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+                toggleMenu(false);
             }
         });
 
-        // 窗口 resize 时关闭菜单
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                toggleMenu(false);
+            }
+        });
+
+        // 图片懒加载
+        const lazyLoad = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(lazyLoad, {
+            rootMargin: '200px 0px',
+            threshold: 0.01
+        });
+
+        // 内容加载管理
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loading-text');
+            const content = document.querySelector('.content-wrapper');
+            
+            loader.style.display = 'block';
+            
+            // 模拟内容加载
+            setTimeout(() => {
+                loader.style.display = 'none';
+                content.style.visibility = 'visible';
+                content.style.opacity = 1;
+                
+                // 启动图片懒加载
+                document.querySelectorAll('.grid-item img[data-src]').forEach(img => {
+                    observer.observe(img);
+                });
+            }, 1000);
+        });
+
+        // 响应式处理
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+                toggleMenu(false);
             }
-        });
-
-        // 初始化调试模式 (生产环境可移除)
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('导航系统已加载 - v1.3.1');
-            console.log('当前菜单状态:', navMenu.classList.contains('active') ? '展开' : '收起');
         });
     </script>
 </body>
